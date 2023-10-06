@@ -109,7 +109,7 @@ interface SaveRequestModalProps {
   onClose: () => void;
 }
 
-const SaveRequestModal: FC<SaveRequestModalProps> = ({
+const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
                                                        open,
                                                        treeData,
                                                        requestName,
@@ -319,4 +319,4 @@ const SaveRequestModal: FC<SaveRequestModalProps> = ({
   );
 };
 
-export default SaveRequestModal;
+export default CollectionsSaveRequest;
