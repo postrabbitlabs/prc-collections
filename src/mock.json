@@ -1,0 +1,85 @@
+[
+  {
+    "name": "k8s",
+    "key": "64552f9a125def8f0d6d93e8",
+    "item": [
+      {
+        "key": "64552f9a125def8f0d6d93ea",
+        "name": "pod",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e1",
+            "name": "New Folder",
+            "item": [
+              {
+                "key": "",
+                "name": "ceshi",
+                "request": {
+                  "method": "GET",
+                  "header": []
+                },
+                "response": []
+              }
+            ]
+          },
+          {
+            "key": "64552f9a125def8f0d6d93e2",
+            "name": "读取指定的 Pod",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "/api/v1/namespaces/{namespace}/pods/{name}",
+                "path": [
+                  "api",
+                  "v1",
+                  "namespaces",
+                  "{namespace}",
+                  "pods",
+                  "{name}"
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "key": "64552f9a125def8f0d6d93e3",
+            "name": "读取指定 Pod 的 ephemeralcontainers",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "/api/v1/namespaces/{namespace}/pods/{name}/ephemeralcontainers",
+                "path": [
+                  "api",
+                  "v1",
+                  "namespaces",
+                  "{namespace}",
+                  "pods",
+                  "{name}",
+                  "ephemeralcontainers"
+                ]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      }
+    ]
+  }
+]

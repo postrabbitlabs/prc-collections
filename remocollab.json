@@ -1,0 +1,7 @@
+[
+  {
+    "name": "https://github.com/postrabbitlabs/prc-base",
+    "branch": "main",
+    "libs": "src/libs"
+  }
+]
