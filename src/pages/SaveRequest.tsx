@@ -1,5 +1,3 @@
-// import CollectionMenus from "@/libs/Menus";
-// import CollectionsSaveRequest from "@/libs/SaveRequest.tsx";
 import { Button } from 'antd';
 import { useState } from 'react';
 
@@ -8,7 +6,7 @@ import treeData from '@/mock.json';
 
 const SaveRequestPage = () => {
   const [open, setOpen] = useState(true);
-  // const { t } = useTranslation();
+
   return (
     <div>
       <Button
@@ -24,8 +22,14 @@ const SaveRequestPage = () => {
         treeData={treeData}
         open={open}
         requestName={''}
-        onCreateFolder={() => {}}
-        onSave={(data) => {}}
+        onCreateFolder={() => {
+          return new Promise((resolve) => {
+            resolve('ss');
+          });
+        }}
+        onSave={(folderKey, requestName) => {
+          console.log(folderKey, requestName);
+        }}
         onClose={() => {
           setOpen(false);
         }}

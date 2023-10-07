@@ -1,59 +1,16 @@
 import { FolderOutlined, SearchOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import { Breadcrumb, Button, Input, InputRef, Modal, Space, Spin, theme, Typography } from 'antd';
-// import i18next from 'i18next';
-// import i18n from 'i18next';
 import { FC, useMemo, useRef, useState } from 'react';
 
+import { findNodeByKey, findPathByKey, searchNodes } from '@/libs/helpers';
+import MatchRow from '@/libs/widgets/MatchRow.tsx';
+import SaveRequestDivider from '@/libs/widgets/SaveRequestDivider.tsx';
+import SaveRequestMainBox from '@/libs/widgets/SaveRequestMainBox.tsx';
 import { ItemType, TreeNode } from '@/remocollab/prc-base/token.ts';
 
-import { useTranslation } from './useTranslation.ts';
-// import { ItemType, TreeNode } from './token.ts';
+import { useTranslation } from './helpers/useTranslation.ts';
 import RequestItemDisplay from './widgets/RequestItemDisplay.tsx';
-
-function findNodeByKey(tree: TreeNode[], nameToFind: string): TreeNode | null {
-  for (const node of tree) {
-    if (node.key === nameToFind) {
-      return node; // 如果找到匹配的节点，返回该节点
-    }
-    if (node.item) {
-      const foundNode = findNodeByKey(node.item, nameToFind); // 递归搜索子节点
-      if (foundNode) {
-        return foundNode; // 如果在子节点中找到匹配的节点，返回该节点
-      }
-    }
-  }
-  return null; // 如果没有找到匹配的节点，返回 null
-}
-
-function findPathByKey(
-  tree: TreeNode[],
-  nameToFind: string,
-  currentPath: { name: string; key: string }[] = [],
-): any[] | null {
-  for (const [_, node] of tree.entries()) {
-    const nodePath = [
-      ...currentPath,
-      {
-        key: node.key,
-        name: node.name,
-      },
-    ]; // 更新当前节点的路径
-
-    if (node.key === nameToFind) {
-      return nodePath; // 如果找到匹配的节点，返回路径
-    }
-
-    if (node.item) {
-      const foundPath = findPathByKey(node.item, nameToFind, nodePath); // 递归搜索子节点
-      if (foundPath) {
-        return foundPath; // 如果在子节点中找到匹配的节点，返回路径
-      }
-    }
-  }
-
-  return null; // 如果没有找到匹配的节点，返回 null
-}
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -66,7 +23,6 @@ interface FooterProps {
 const Footer: FC<FooterProps> = ({ onClose, onSave, onNewFolder, locale }) => {
   const token = useToken();
   const { t } = useTranslation(locale);
-  // console.log(i18n)
   return (
     <div
       css={css`
@@ -144,10 +100,19 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
     }
     return zuizhong;
   }, [treeData, selectedKey, loding]);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const searchedTreeData = useMemo(() => {
+    if (!searchValue) {
+      return [];
+    }
+    return searchNodes(treeData, searchValue);
+  }, [searchValue]);
   return (
     <Modal
       centered
-      title={t('shortcut.request.save_request')}
+      title={t('save.request')}
       width={650}
       open={open}
       footer={
@@ -204,6 +169,7 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
             display: flex;
           `}
         >
+          {/*这块必须要改*/}
           {selectedKey ? (
             <Breadcrumb
               items={[
@@ -241,31 +207,18 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
         </span>
       </Space>
 
-      <Input placeholder={t('search.folder')} prefix={<SearchOutlined />} />
+      <Input
+        placeholder={t('search.folder')}
+        prefix={<SearchOutlined />}
+        value={searchValue}
+        onChange={(v) => {
+          setSearchValue(v.target.value);
+        }}
+      />
 
-      <div
-        css={css`
-          //transform: translateY(-5px);
-          height: 5px;
-          border: 1px solid ${token.token.colorBorder};
-          border-top: none;
-          border-bottom: none;
-          margin-top: -5px;
-        `}
-      ></div>
-      <div
-        css={css`
-          //transform: translateY(-5px);
-          border: 1px solid ${token.token.colorBorder};
-          border-bottom-left-radius: ${token.token.borderRadius}px;
-          border-bottom-right-radius: ${token.token.borderRadius}px;
-          border-top: none;
-          height: 360px;
-          margin-bottom: 30px;
-          padding-top: 5px;
-          overflow-y: auto;
-        `}
-      >
+      <SaveRequestDivider />
+      <SaveRequestMainBox>
+        {/*新增文件夹模式*/}
         {newFolderMode && (
           <Space
             css={css`
@@ -300,47 +253,70 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
             <Button size={'small'}>Cancel</Button>
           </Space>
         )}
-        {selectedTreeData.map((item, index) => {
-          return (
-            <div
-              onClick={() => {
-                if (!item.request) {
-                  setSelectedKey(item.key);
-                }
-              }}
-              key={index}
-              css={css`
-                padding: 0 10px;
-                height: 40px;
-                line-height: 40px;
-                display: flex;
-                justify-content: space-between;
-                opacity: ${item.request ? 0.4 : 'unset'};
-                cursor: ${item.request ? 'default' : 'pointer'};
-                .right-arrow {
-                  display: none;
-                }
-                ${!item.request
-                  ? `&:hover {
-                  background-color: #eee;
-                  .right-arrow {
-                    display: inline;
-                  }
-                }`
-                  : null}
-              `}
-            >
-              <Spin spinning={Boolean(item.added)}>
-                <RequestItemDisplay
-                  itemType={item.request ? ItemType.REQUEST : ItemType.FOLDER}
-                  name={item.name}
-                  request={item.request}
-                />
-              </Spin>
-            </div>
-          );
-        })}
-      </div>
+
+        {/*分模式*/}
+        {/*普通模式*/}
+        {!searchValue &&
+          selectedTreeData.map((item, index) => {
+            return (
+              <MatchRow record={item} key={index} onClick={()=>{
+                setSelectedKey(item.key);
+              }}>
+                <Spin spinning={Boolean(item.added)}>
+                  <RequestItemDisplay
+                    itemType={item.request ? ItemType.REQUEST : ItemType.FOLDER}
+                    name={item.name}
+                    request={item.request}
+                  />
+                </Spin>
+              </MatchRow>
+            );
+          })}
+        {/*搜索模式*/}
+        {searchValue &&
+          searchedTreeData.map((item, index) => {
+            return (
+              <MatchRow record={item} key={index} onClick={()=>{
+                setSelectedKey(item.key);
+                setSearchValue('')
+              }}>
+                <div
+                  css={css`
+                    display: flex;
+                  `}
+                >
+                  <FolderOutlined
+                    css={css`
+                      margin-right: 8px;
+                    `}
+                  />
+                  <div
+                    css={css`
+                      display: flex;
+                      flex-direction: column;
+                      line-height: 1.2;
+                      font-size: 13px;
+                      justify-content: center;
+                    `}
+                  >
+                    <span>{item.name}</span>
+                    <div
+                      css={css`
+                        width: 520px;
+                        color: #999999;
+                        overflow: hidden; //超出的文本隐藏
+                        text-overflow: ellipsis; //溢出用省略号显示
+                        white-space: nowrap; //溢出不换行
+                      `}
+                    >
+                      {item.path}
+                    </div>
+                  </div>
+                </div>
+              </MatchRow>
+            );
+          })}
+      </SaveRequestMainBox>
     </Modal>
   );
 };
