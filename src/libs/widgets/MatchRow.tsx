@@ -1,21 +1,21 @@
 import { css } from '@emotion/react';
 
-const MatchRow = ({record,children,onClick}) => {
+const MatchRow = ({ record, children, onClick, allowTypes }) => {
   return (
     <div
-      onClick={onClick}
+      onClick={allowTypes.includes(record.type)?onClick:null}
       css={css`
         padding: 0 10px;
         height: 40px;
         line-height: 40px;
         display: flex;
         justify-content: space-between;
-        opacity: ${record.request ? 0.4 : 'unset'};
-        cursor: ${record.request ? 'default' : 'pointer'};
+        opacity: ${!allowTypes.includes(record.type) ? 0.4 : 'unset'};
+        cursor: ${!allowTypes.includes(record.type) ? 'default' : 'pointer'};
         .right-arrow {
           display: none;
         }
-        ${!record.request
+        ${allowTypes.includes(record.type)
           ? `&:hover {
                   background-color: #eee;
                   .right-arrow {
@@ -25,9 +25,7 @@ const MatchRow = ({record,children,onClick}) => {
           : null}
       `}
     >
-      {
-        children
-      }
+      {children}
     </div>
   );
 };

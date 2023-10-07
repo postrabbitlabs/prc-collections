@@ -1,4 +1,4 @@
-import CollectionMenus from "@/libs/Menus";
+import CollectionMenus from "../libs/components/Menus";
 
 const MenusPage = () => {
   return <div>

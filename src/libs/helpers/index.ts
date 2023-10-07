@@ -44,14 +44,15 @@ export function findPathByKey(
   return null; // 如果没有找到匹配的节点，返回 null
 }
 
-export   function searchNodes(treeData, searchValue) {
+export   function searchNodes(treeData, searchValue,allowTypes) {
   const results = [];
 
   function search(node, path) {
     const currentPath = path ? `${path} > ${node.name}` : node.name;
 
-    if (node.name.includes(searchValue) && !node.request) {
+    if (node.name.includes(searchValue) && allowTypes.includes(node.type)) {
       results.push({
+        type:node.type,
         node: node,
         name: node.name,
         key: node.key,

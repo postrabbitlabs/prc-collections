@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { useState } from 'react';
 
-import SaveRequestModal from '@/libs/SaveRequest.tsx';
+import SaveRequestModal from '@/libs/components/SaveRequest.tsx';
 import treeData from '@/mock.json';
 
 const SaveRequestPage = () => {

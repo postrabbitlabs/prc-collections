@@ -2,7 +2,7 @@
 // import RequestItemDisplay from '../../widgets/RequestItemDisplay.tsx';
 
 import RequestItemDisplay from "@/libs/widgets/RequestItemDisplay.tsx";
-import { ItemType, RequestMethods } from "@/remocollab/prc-base/token";
+import { ItemType, RequestMethods } from "@/remocollab/prc-base/token.ts";
 
 function CollectionTitle({data}) {
   const item = data

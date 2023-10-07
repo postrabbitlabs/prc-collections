@@ -5,12 +5,12 @@ import { FC, useMemo, useRef, useState } from 'react';
 
 import { ItemType, TreeNode } from '@/remocollab/prc-base/token.ts';
 
-import { findNodeByKey, findPathByKey, searchNodes } from './helpers';
-import { useTranslation } from './helpers/useTranslation.ts';
-import MatchRow from './widgets/MatchRow.tsx';
-import RequestItemDisplay from './widgets/RequestItemDisplay.tsx';
-import SaveRequestDivider from './widgets/SaveRequestDivider.tsx';
-import SaveRequestMainBox from './widgets/SaveRequestMainBox.tsx';
+import { findNodeByKey, findPathByKey, searchNodes } from '../helpers';
+import { useTranslation } from '../helpers/useTranslation.ts';
+import MatchRow from '../widgets/MatchRow.tsx';
+import RequestItemDisplay from '../widgets/RequestItemDisplay.tsx';
+import SaveRequestDivider from '../widgets/SaveRequestDivider.tsx';
+import SaveRequestMainBox from '../widgets/SaveRequestMainBox.tsx';
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -69,8 +69,20 @@ interface SaveRequestModalProps {
   onCreateFolder: (newFolderName: string, parentFolderKey: string) => Promise<string>;
   onClose: () => void;
   locale: string;
+  allowTypes?: number[];
 }
 
+/*
+参数解释
+open:是否打开
+requestName:请求名称
+treeData:树形结构数据
+onSave:保存
+onCreateFolder:创建文件夹
+onClose:关闭
+locale:语言
+allowTypes:允许选择的类型
+ */
 const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
   open,
   treeData,
@@ -79,6 +91,8 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
   onSave,
   onClose,
   locale,
+  allowTypes = [1, 3],
+  // yuexuSelectType:[1,2,3]
 }) => {
   const [newFolderMode, setNewFolderMode] = useState(false);
   const [loding, setLoding] = useState(false);
@@ -107,7 +121,7 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
     if (!searchValue) {
       return [];
     }
-    return searchNodes(treeData, searchValue);
+    return searchNodes(treeData, searchValue,allowTypes);
   }, [searchValue]);
   return (
     <Modal
@@ -260,6 +274,7 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
           selectedTreeData.map((item, index) => {
             return (
               <MatchRow
+                allowTypes={allowTypes}
                 record={item}
                 key={index}
                 onClick={() => {
@@ -281,6 +296,7 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
           searchedTreeData.map((item, index) => {
             return (
               <MatchRow
+                allowTypes={allowTypes}
                 record={item}
                 key={index}
                 onClick={() => {
