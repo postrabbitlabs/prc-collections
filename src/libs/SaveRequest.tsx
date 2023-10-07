@@ -1,12 +1,15 @@
 import { FolderOutlined, SearchOutlined } from '@ant-design/icons';
 import { css } from '@emotion/react';
 import { Breadcrumb, Button, Input, InputRef, Modal, Space, Spin, theme, Typography } from 'antd';
+// import i18next from 'i18next';
+// import i18n from 'i18next';
 import { FC, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
+import { ItemType, TreeNode } from '@/remocollab/prc-base/token.ts';
+
+import { useTranslation } from './useTranslation.ts';
 // import { ItemType, TreeNode } from './token.ts';
 import RequestItemDisplay from './widgets/RequestItemDisplay.tsx';
-import {TreeNode,ItemType} from "@/remocollab/prc-base/token.ts";
 
 function findNodeByKey(tree: TreeNode[], nameToFind: string): TreeNode | null {
   for (const node of tree) {
@@ -58,10 +61,12 @@ interface FooterProps {
   onClose: () => void;
   onSave: () => void;
   onNewFolder: () => void;
+  locale: string;
 }
-const Footer: FC<FooterProps> = ({ onClose, onSave, onNewFolder }) => {
+const Footer: FC<FooterProps> = ({ onClose, onSave, onNewFolder, locale }) => {
   const token = useToken();
-  const { t } = useTranslation();
+  const { t } = useTranslation(locale);
+  // console.log(i18n)
   return (
     <div
       css={css`
@@ -107,22 +112,25 @@ interface SaveRequestModalProps {
   onSave: (folderKey: string, requestName: string) => void;
   onCreateFolder: (newFolderName: string, parentFolderKey: string) => Promise<string>;
   onClose: () => void;
+  locale: string;
 }
 
 const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
-                                                       open,
-                                                       treeData,
-                                                       requestName,
-                                                       onCreateFolder,
-                                                       onSave,
-                                                       onClose,
-                                                     }) => {
+  open,
+  treeData,
+  requestName,
+  onCreateFolder,
+  onSave,
+  onClose,
+  locale,
+}) => {
   const [newFolderMode, setNewFolderMode] = useState(false);
   const [loding, setLoding] = useState(false);
   const requestNameInputRef = useRef<InputRef>(null);
   const folderNameInputRef = useRef<InputRef>(null);
   const token = useToken();
-  const { t } = useTranslation();
+  console.log(locale,'locale')
+  const { t } = useTranslation(locale);
   const [selectedKey, setSelectedKey] = useState<string | undefined>(undefined);
   const selectedTreeData = useMemo(() => {
     // 这里不能引用传递
@@ -146,6 +154,7 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
       open={open}
       footer={
         <Footer
+          locale={locale}
           onNewFolder={() => {
             setNewFolderMode(true);
           }}
@@ -199,8 +208,16 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
         >
           {selectedKey ? (
             <Breadcrumb
-              items={(findPathByKey(treeData, selectedKey) || []).map((i, index) => {
-                if (index < (findPathByKey(treeData, selectedKey) || []).length - 1) {
+              items={[
+                { name: 'root', key: 'root' },
+                ...(findPathByKey(treeData, selectedKey) || []),
+              ].map((i, index) => {
+                if (
+                  index <
+                  [{ name: 'root', key: 'root' }, ...(findPathByKey(treeData, selectedKey) || [])]
+                    .length -
+                    1
+                ) {
                   return {
                     title: (
                       <span
@@ -230,7 +247,17 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
 
       <div
         css={css`
-          transform: translateY(-5px);
+          //transform: translateY(-5px);
+          height: 5px;
+          border: 1px solid ${token.token.colorBorder};
+          border-top: none;
+          border-bottom: none;
+          margin-top: -5px;
+        `}
+      ></div>
+      <div
+        css={css`
+          //transform: translateY(-5px);
           border: 1px solid ${token.token.colorBorder};
           border-bottom-left-radius: ${token.token.borderRadius}px;
           border-bottom-right-radius: ${token.token.borderRadius}px;
@@ -238,6 +265,7 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
           height: 360px;
           margin-bottom: 30px;
           padding-top: 5px;
+          overflow-y: auto;
         `}
       >
         {newFolderMode && (
@@ -295,13 +323,13 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
                   display: none;
                 }
                 ${!item.request
-                ? `&:hover {
+                  ? `&:hover {
                   background-color: #eee;
                   .right-arrow {
                     display: inline;
                   }
                 }`
-                : null}
+                  : null}
               `}
             >
               <Spin spinning={Boolean(item.added)}>

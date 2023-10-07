@@ -79,6 +79,111 @@
             "response": []
           }
         ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "key": "64552f9a125def8f0d6d93e4",
+        "name": "deployment",
+        "item": [
+          {
+            "key": "64552f9a125def8f0d6d93e5",
+            "name": "读取指定的 Deployment",
+            "request": {
+              "method": "GET",
+              "header": []
+            },
+            "response": []
+          }
+        ]
       }
     ]
   }
