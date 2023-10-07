@@ -1,16 +1,16 @@
 // import React from 'react';
-import {DownOutlined, FilterOutlined, PlusOutlined} from '@ant-design/icons';
-import {Input, Tree} from 'antd';
+import { DownOutlined, FilterOutlined, PlusOutlined } from '@ant-design/icons';
+// import {postmanToAntdTreeData} from "../../../helpers";
+import { css } from '@emotion/react';
+import { Input, Tree } from 'antd';
 // import { Tree } from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import { useMemo } from 'react';
 
-import CollectionTitle from './CollectionTitle.tsx';
+import { postmanToAntdTreeData } from '@/helpers';
+import treeData from '@/mock.json';
 
-import treeData from '@/mock.json'
-// import {postmanToAntdTreeData} from "../../../helpers";
-import {css} from "@emotion/react";
-import {postmanToAntdTreeData} from "@/helpers";
+import CollectionTitle from './CollectionTitle.tsx';
 const CollectionMenus = () => {
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info);
@@ -19,9 +19,7 @@ const CollectionMenus = () => {
   const genTreeData = useMemo(() => {
     const loop = (data: DataNode[]): DataNode[] =>
       data.map((item) => {
-        const title = (
-          <CollectionTitle data={item}/>
-        );
+        const title = <CollectionTitle data={item} />;
         if (item.children) {
           return { title, key: item.key, children: loop(item.children) };
         }
@@ -31,7 +29,7 @@ const CollectionMenus = () => {
           key: item.key,
         };
       });
-    console.log(treeData,'treeData')
+    console.log(treeData, 'treeData');
     return loop(postmanToAntdTreeData(treeData));
   }, [treeData]);
 
@@ -70,7 +68,7 @@ const CollectionMenus = () => {
           size='small'
           placeholder=''
           prefix={<FilterOutlined />}
-          onChange={()=>{}}
+          onChange={() => {}}
         />
       </div>
       <Tree

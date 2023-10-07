@@ -3,14 +3,14 @@ import { css } from '@emotion/react';
 import { Breadcrumb, Button, Input, InputRef, Modal, Space, Spin, theme, Typography } from 'antd';
 import { FC, useMemo, useRef, useState } from 'react';
 
-import { findNodeByKey, findPathByKey, searchNodes } from '@/libs/helpers';
-import MatchRow from '@/libs/widgets/MatchRow.tsx';
-import SaveRequestDivider from '@/libs/widgets/SaveRequestDivider.tsx';
-import SaveRequestMainBox from '@/libs/widgets/SaveRequestMainBox.tsx';
 import { ItemType, TreeNode } from '@/remocollab/prc-base/token.ts';
 
+import { findNodeByKey, findPathByKey, searchNodes } from './helpers';
 import { useTranslation } from './helpers/useTranslation.ts';
+import MatchRow from './widgets/MatchRow.tsx';
 import RequestItemDisplay from './widgets/RequestItemDisplay.tsx';
+import SaveRequestDivider from './widgets/SaveRequestDivider.tsx';
+import SaveRequestMainBox from './widgets/SaveRequestMainBox.tsx';
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -259,9 +259,13 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
         {!searchValue &&
           selectedTreeData.map((item, index) => {
             return (
-              <MatchRow record={item} key={index} onClick={()=>{
-                setSelectedKey(item.key);
-              }}>
+              <MatchRow
+                record={item}
+                key={index}
+                onClick={() => {
+                  setSelectedKey(item.key);
+                }}
+              >
                 <Spin spinning={Boolean(item.added)}>
                   <RequestItemDisplay
                     itemType={item.request ? ItemType.REQUEST : ItemType.FOLDER}
@@ -276,10 +280,14 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
         {searchValue &&
           searchedTreeData.map((item, index) => {
             return (
-              <MatchRow record={item} key={index} onClick={()=>{
-                setSelectedKey(item.key);
-                setSearchValue('')
-              }}>
+              <MatchRow
+                record={item}
+                key={index}
+                onClick={() => {
+                  setSelectedKey(item.key);
+                  setSearchValue('');
+                }}
+              >
                 <div
                   css={css`
                     display: flex;
