@@ -129,7 +129,6 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
   const requestNameInputRef = useRef<InputRef>(null);
   const folderNameInputRef = useRef<InputRef>(null);
   const token = useToken();
-  console.log(locale,'locale')
   const { t } = useTranslation(locale);
   const [selectedKey, setSelectedKey] = useState<string | undefined>(undefined);
   const selectedTreeData = useMemo(() => {
@@ -145,7 +144,6 @@ const CollectionsSaveRequest: FC<SaveRequestModalProps> = ({
     }
     return zuizhong;
   }, [treeData, selectedKey, loding]);
-
   return (
     <Modal
       centered

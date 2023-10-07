@@ -2,7 +2,6 @@
 // import CollectionsSaveRequest from "@/libs/SaveRequest.tsx";
 import { Button } from 'antd';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import SaveRequestModal from '@/libs/SaveRequest.tsx';
 import treeData from '@/mock.json';
@@ -21,7 +20,7 @@ const SaveRequestPage = () => {
       </Button>
       {/*treeData是postman类型，需要转一下*/}
       <SaveRequestModal
-        locale={'en'}
+        locale={'cn'}
         treeData={treeData}
         open={open}
         requestName={''}
